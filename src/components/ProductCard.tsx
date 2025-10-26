@@ -1,3 +1,5 @@
+import { useCart } from "../components/CartProvider";
+
 interface ProductCardProps {
   id: string;
   imageUrl: string;
@@ -14,10 +16,15 @@ export function ProductCard({
   price,
   id,
 }: ProductCardProps) {
-  // TODO: Más adelante conectaremos aquí la función 'agregarAlCarrito(id)'
+  const { addToCart } = useCart();
   const handleBuyClick = () => {
-    console.log("Comprar producto:", id);
-    // Aquí llamaremos a nuestro futuro 'CartContext'
+    addToCart({
+      id,
+      title,
+      price: Number(price.replace(/\D/g, "")), // convierte "CLP 159.990" a 159990
+      imageUrl,
+    });
+    
   };
 
   return (
