@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export function Header() {
   return (
-    <header className="bg-black text-white font-semibold">
+    <header className="bg-gradient-to-t from-black via-black to-stone-800 text-white font-semibold">
       <div className="mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center flex-shrink-0 gap-4">
           <button>
