@@ -1,46 +1,74 @@
-export function BlogPage() {
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+interface BlogPost {
+  id: number;
+  title: string;
+  content: string;
+  date: string;
+  author: string;
+}
+
+function BlogPage() {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    const storedPosts = localStorage.getItem("blogPosts");
+    if (storedPosts) {
+      try {
+        setPosts(JSON.parse(storedPosts) as BlogPost[]);
+      } catch (e) {
+        console.error("Error al parsear posts de localStorage:", e);
+        setPosts([]);
+      }
+    }
+  }, []);
+
+  const renderPostCard = (post: BlogPost) => (
+    <div
+      key={post.id}
+      className="bg-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+    >
+      <h2 className="text-2xl font-bold mb-2 text-blue-300">{post.title}</h2>
+      <p className="text-gray-400 text-sm mb-4">
+        Por: {post.author} | Publicado el: {post.date}
+      </p>
+      {/* Muestra un extracto del contenido */}
+      <p className="text-gray-200 line-clamp-3">{post.content}</p>
+      <Link
+        to={`/blog/${post.id}`}
+        className="mt-4 inline-block text-blue-400 hover:text-blue-200 font-semibold"
+      >
+        Leer más...
+      </Link>
+    </div>
+  );
+
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-4xl font-bold text-sky-500 mb-8 text-center">
-        Comunidad & Noticias
-      </h1>
+    <div className="container mx-auto p-8">
+      <h1 className="text-4xl font-extrabold mb-8 text-white">Nuestro Blog</h1>
 
-      <hr className="text-white max-w-7xl mx-auto my-3" />
+      {/* Botón para crear un nuevo post */}
+      <div className="mb-8">
+        <Link
+          to="/blog/new"
+          className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-md"
+        >
+          ➕ Escribir Nuevo Post
+        </Link>
+      </div>
 
-      <h2 className="text-2xl font-bold mb-4">Últimas Noticias</h2>
-
-      <article className="mb-8">
-        <article className="bg-gray-900 rounded-3xl shadow-2xl p-0 flex flex-col items-center hover:shadow-3xl transition-all border-2 border-green-800 overflow-hidden">
-          <img
-            src="img/SilkSong.jpg"
-            alt="Noticia principal"
-            className="w-full object-cover"
-          />
-          <div className="w-full p-10 flex flex-col items-start">
-            <span className="text-gray-400 text-base mb-2">
-              Noticia · 4 sep 2025
-            </span>
-            <h2 className="text-4xl font-extrabold mb-4 text-white">
-              ¡Nuevo lanzamiento rompe el mercado digital!
-            </h2>
-            <p className="text-gray-200 mb-4 text-2xl leading-relaxed">
-              Silksong, la esperada secuela de Hollow Knight, ha sobrecargado el
-              mercado digital, plataformas como steam, PlayStation Store entre
-              otras colapsan ante la demanda masiva. 7 de años de espera desde
-              el primer juego han llevado a que los fans estuviesen ansiosos por
-              esta nueva entrega.
-              <br />
-              <br />
-              Otras compañias retrasan sus lanzamientos para evitar la
-              competencia directa con este esperado título.
-              <br />
-              <br />
-              TeamCherry ha demostrado un gran nivel de dedicación como ninguna
-              otra compañia indie, con un arte y banda sonora impecable.
-            </p>
-          </div>
-        </article>
-      </article>
+      {posts.length === 0 ? (
+        <p className="text-xl text-gray-400">
+          Aún no hay publicaciones. ¡Sé el primero en crear una!
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map(renderPostCard)}
+        </div>
+      )}
     </div>
   );
 }
+
+export default BlogPage;
