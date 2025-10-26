@@ -3,24 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 
 export function RegisterPage() {
   const navigate = useNavigate();
-  // Se añaden los campos de estado para email, password, y confirmPassword
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  // Tipado correcto para el evento de formulario
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Lógica para verificar que las contraseñas coincidan
     if (password !== confirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
     }
 
-    // Aquí iría la llamada a tu API para registrar al usuario.
     alert(`Usuario registrado: ${email}`);
-    // Después del registro exitoso, se redirige al login
     navigate("/login");
   };
 
@@ -43,7 +38,6 @@ export function RegisterPage() {
             placeholder="Correo electrónico"
             className="p-2 rounded bg-gray-700 text-white w-full"
             value={email}
-            // Tipado correcto para el evento de cambio
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
             }
@@ -63,7 +57,6 @@ export function RegisterPage() {
             placeholder="Contraseña"
             className="p-2 rounded bg-gray-700 text-white w-full"
             value={password}
-            // Tipado correcto para el evento de cambio
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
@@ -83,7 +76,6 @@ export function RegisterPage() {
             placeholder="Confirmar Contraseña"
             className="p-2 rounded bg-gray-700 text-white w-full"
             value={confirmPassword}
-            // Tipado correcto para el evento de cambio
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setConfirmPassword(e.target.value)
             }

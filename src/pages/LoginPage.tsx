@@ -3,19 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const navigate = useNavigate();
-  // Se añade <string> para tipar explícitamente el estado (opcional, pero recomendado)
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  // Tipado correcto para el evento de formulario
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Aquí iría la llamada a tu API para autenticar.
-    // Simulación:
     if (email === "duoc@duocuc.cl" && password === "1234") {
       alert("Login exitoso!");
-      navigate("/"); // Redirige al home
+      navigate("/");
     } else {
       alert("Email o contraseña incorrecta");
     }
@@ -39,7 +35,6 @@ function LoginPage() {
             placeholder="correo@ejemplo.com"
             className="p-2 rounded bg-gray-700 text-white w-full"
             value={email}
-            // Tipado correcto para el evento de cambio
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
             }
@@ -59,7 +54,6 @@ function LoginPage() {
             placeholder="Contraseña"
             className="p-2 rounded bg-gray-700 text-white w-full"
             value={password}
-            // Tipado correcto para el evento de cambio
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
