@@ -59,7 +59,7 @@ function BlogPage() {
       {/* Mostrar publicaciones o el mensaje de vacío */}
       {posts.length === 0 ? (
         <p className="text-xl text-gray-400 mt-10">
-          Aún no hay publicaciones. ¡Sé el primero en crear una! 🚀
+          Aún no hay publicaciones. ¡Sé el primero en crear una!
         </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
