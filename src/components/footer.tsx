@@ -23,9 +23,8 @@ export function Footer() {
             </a>
           </span>
           <span>
-            {/* Asegúrate de que esta ruta apunte a 'public/sprites/social.png' */}
             <img
-              src="/sprites/social.png"
+              src="/public/img/social.png"
               alt="WhatsApp Icon"
               className="inline-block w-4 h-4 mr-1"
             />
