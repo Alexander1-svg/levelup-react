@@ -32,7 +32,7 @@ function LoginPage() {
           <input
             type="email"
             id="email"
-            placeholder="correo@ejemplo.com"
+            placeholder="Correo@ejemplo.cl"
             className="p-2 rounded bg-gray-700 text-white w-full"
             value={email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
