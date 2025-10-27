@@ -4,6 +4,7 @@ import { Header } from "./components/header";
 import { Footer } from "./components/footer";
 import { HomePage } from "./pages/HomePage";
 import BlogPage from "./pages/BlogPage";
+import CreatePostPage from "./pages/CreatePostPage";
 import CarritoPage from "./pages/CarritoPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
@@ -21,6 +22,7 @@ export function App() {
 
             <Route path="/nosotros" element={<NosotrosPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/create-post" element={<CreatePostPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/carrito" element={<CarritoPage />} />
