@@ -2,10 +2,9 @@ import { CartProvider } from "./components/CartProvider";
 import { Routes, Route } from "react-router-dom";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
-import {HomePage} from "./pages/HomePage";
+import { HomePage } from "./pages/HomePage";
 import BlogPage from "./pages/BlogPage";
-import CarritoPage from "./pages/CarritoPage";  
-
+import CarritoPage from "./pages/CarritoPage";
 
 export function App() {
   return (

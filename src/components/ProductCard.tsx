@@ -24,12 +24,11 @@ export function ProductCard({
       price: Number(price.replace(/\D/g, "")), // convierte "CLP 159.990" a 159990
       imageUrl,
     });
-    
   };
 
   return (
     <div className="bg-gray-800 text-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
-      <img src={imageUrl} alt={title} className="w-full h-72 object-cover" />
+      <img src={imageUrl} alt={title} className="w-full h-auto object-cover" />
       <div className="p-4 flex flex-col flex-grow">
         {" "}
         <h3 className="text-lg font-sans mb-2">{title}</h3>
