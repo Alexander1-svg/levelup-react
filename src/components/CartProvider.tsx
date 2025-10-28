@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
-import React from "react";
+
 
 // Estructura de un ítem del carrito
 export interface CartItem {
