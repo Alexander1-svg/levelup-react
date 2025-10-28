@@ -1,22 +1,26 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { CartProvider, useCart, CartItem } from "../CartProvider";
-import { fireEvent } from "@testing-library/dom";
 
+// Componente de prueba para interactuar con el hook
 interface TestComponentProps {
   item: Omit<CartItem, "quantity">;
 }
 
 function TestComponent({ item }: TestComponentProps) {
-  const { cart, addToCart, removeFromCart, clearCart, total } = useCart();
+  const { cart, addToCart, removeFromCart, decrementFromCart, clearCart, total } = useCart();
 
   return (
     <div>
       <button onClick={() => addToCart(item)}>Add</button>
       <button onClick={() => removeFromCart(item.id)}>Remove</button>
-      <button onClick={() => clearCart()}>Clear</button>
+      <button onClick={() => decrementFromCart(item.id)}>-</button>
+      <button onClick={() => addToCart(item)}>+</button>
+      <button onClick={clearCart}>Vaciar carrito</button>
+
       <span data-testid="cart-length">{cart.length}</span>
       <span data-testid="total">{total}</span>
+
       {cart.map((c) => (
         <div key={c.id} data-testid="cart-item">
           {c.title} x {c.quantity}
@@ -33,7 +37,7 @@ describe("CartProvider", () => {
     localStorage.clear();
   });
 
-  it("adds an item to the cart", () => {
+  it("agrega un item al carrito", () => {
     render(
       <CartProvider>
         <TestComponent item={product} />
@@ -41,19 +45,20 @@ describe("CartProvider", () => {
     );
 
     fireEvent.click(screen.getByText("Add"));
+
     expect(screen.getByTestId("cart-length").textContent).toBe("1");
     expect(screen.getByTestId("total").textContent).toBe("100");
     expect(screen.getByText("Product 1 x 1")).toBeDefined();
   });
 
-  it("increments quantity if item already exists", () => {
+  it("incrementa cantidad si el item ya existe usando +", () => {
     render(
       <CartProvider>
         <TestComponent item={product} />
       </CartProvider>
     );
 
-    const addButton = screen.getByText("Add");
+    const addButton = screen.getByText("+");
     fireEvent.click(addButton);
     fireEvent.click(addButton);
 
@@ -62,31 +67,52 @@ describe("CartProvider", () => {
     expect(screen.getByText("Product 1 x 2")).toBeDefined();
   });
 
-  it("removes an item from the cart", () => {
+  it("decrementa cantidad con - y elimina si llega a 0", () => {
     render(
       <CartProvider>
         <TestComponent item={product} />
       </CartProvider>
     );
 
-    const addButton = screen.getByText("Add");
-    fireEvent.click(addButton);
+    const addButton = screen.getByText("+");
+    fireEvent.click(addButton); // cantidad 1
+    fireEvent.click(addButton); // cantidad 2
 
-    fireEvent.click(screen.getByText("Remove"));
+    const decrementButton = screen.getByText("-");
+    fireEvent.click(decrementButton); // cantidad 1
+
+    expect(screen.getByText("Product 1 x 1")).toBeDefined();
+    expect(screen.getByTestId("total").textContent).toBe("100");
+
+    fireEvent.click(decrementButton); // cantidad 0, debe eliminar
+
     expect(screen.getByTestId("cart-length").textContent).toBe("0");
     expect(screen.getByTestId("total").textContent).toBe("0");
   });
 
-  it("clears the cart", () => {
+  it("elimina un item completamente con Remove", () => {
     render(
       <CartProvider>
         <TestComponent item={product} />
       </CartProvider>
     );
 
-    const addButton = screen.getByText("Add");
-    fireEvent.click(addButton);
-    fireEvent.click(screen.getByText("Clear"));
+    fireEvent.click(screen.getByText("+")); // cantidad 1
+    fireEvent.click(screen.getByText("Remove")); // elimina todo
+
+    expect(screen.getByTestId("cart-length").textContent).toBe("0");
+    expect(screen.getByTestId("total").textContent).toBe("0");
+  });
+
+  it("vacía el carrito con Vaciar carrito", () => {
+    render(
+      <CartProvider>
+        <TestComponent item={product} />
+      </CartProvider>
+    );
+
+    fireEvent.click(screen.getByText("+")); // cantidad 1
+    fireEvent.click(screen.getByText("Vaciar carrito")); // borra todo
 
     expect(screen.getByTestId("cart-length").textContent).toBe("0");
     expect(screen.getByTestId("total").textContent).toBe("0");

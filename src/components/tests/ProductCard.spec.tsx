@@ -4,9 +4,15 @@ import { ProductCard } from "../ProductCard";
 
 describe("ProductCard", () => {
   let addToCartSpy: jasmine.Spy;
+  let decrementFromCartSpy: jasmine.Spy;
+  let removeFromCartSpy: jasmine.Spy;
+  let clearCartSpy: jasmine.Spy;
 
   beforeEach(() => {
     addToCartSpy = jasmine.createSpy("addToCart");
+    decrementFromCartSpy = jasmine.createSpy("decrementFromCart");
+    removeFromCartSpy = jasmine.createSpy("removeFromCart");
+    clearCartSpy = jasmine.createSpy("clearCart");
   });
 
   const productProps = {
@@ -19,11 +25,12 @@ describe("ProductCard", () => {
 
   // Hook mock que será inyectado
   const mockUseCart = () => ({
-    cart: [],
+    cart: [{ ...productProps, price: 159990, quantity: 1 }],
     addToCart: addToCartSpy,
-    removeFromCart: () => {},
-    clearCart: () => {},
-    total: 0,
+    decrementFromCart: decrementFromCartSpy,
+    removeFromCart: removeFromCartSpy,
+    clearCart: clearCartSpy,
+    total: 159990,
   });
 
   it("renders correctly with props", () => {
@@ -37,7 +44,7 @@ describe("ProductCard", () => {
     expect(img.alt).toBe(productProps.title);
   });
 
-  it("calls addToCart with correct data when Comprar button is clicked", () => {
+  it("calls addToCart when Comprar button is clicked", () => {
     render(<ProductCard {...productProps} useCartHook={mockUseCart} />);
     const button = screen.getByText("Comprar");
     fireEvent.click(button);
@@ -48,5 +55,21 @@ describe("ProductCard", () => {
       price: 159990,
       imageUrl: productProps.imageUrl
     });
+  });
+
+  it("calls decrementFromCart when restar button is clicked", () => {
+    render(<ProductCard {...productProps} useCartHook={mockUseCart} />);
+    const restarButton = screen.getByText("-"); // Asumiendo que tu componente tiene botón "-"
+    fireEvent.click(restarButton);
+
+    expect(decrementFromCartSpy).toHaveBeenCalledWith(productProps.id);
+  });
+
+  it("calls clearCart when vaciar carrito button is clicked", () => {
+    render(<ProductCard {...productProps} useCartHook={mockUseCart} />);
+    const vaciarButton = screen.getByText("Vaciar carrito 🗑️"); 
+    fireEvent.click(vaciarButton);
+
+    expect(clearCartSpy).toHaveBeenCalled();
   });
 });
