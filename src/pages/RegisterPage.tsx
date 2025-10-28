@@ -14,7 +14,7 @@ export function RegisterPage() {
       alert("Las contraseñas no coinciden");
       return;
     }
-
+    //Manejo de Logica de registro
     localStorage.setItem(email, password);
 
     alert(`Usuario registrado: ${email}`);
