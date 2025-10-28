@@ -10,7 +10,6 @@ interface ProductCardProps {
   useCartHook?: typeof defaultUseCart;
 }
 
-// 2. Creamos el componente. Recibe los props y los usa para rellenar el HTML.
 export function ProductCard({
   imageUrl,
   title,
@@ -18,7 +17,6 @@ export function ProductCard({
   price,
   id,
   useCartHook,
-
 }: ProductCardProps) {
   const { addToCart } = (useCartHook || defaultUseCart)();
   const handleBuyClick = () => {
@@ -41,7 +39,7 @@ export function ProductCard({
           <span className="text-xl font-bold">{price}</span>
           <button
             className="bg-lime-600 hover:bg-lime-700 text-white px-3 py-1 rounded"
-            onClick={handleBuyClick} // 4. Así se manejan los clics en React
+            onClick={handleBuyClick}
           >
             Comprar
           </button>
