@@ -26,6 +26,7 @@ export function ProductCard({
       price: Number(price.replace(/\D/g, "")),
       imageUrl,
     });
+    alert("Producto agregado al carrito");
   };
 
   return (

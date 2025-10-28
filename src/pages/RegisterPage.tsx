@@ -15,6 +15,8 @@ export function RegisterPage() {
       return;
     }
 
+    localStorage.setItem(email, password);
+
     alert(`Usuario registrado: ${email}`);
     navigate("/login");
   };

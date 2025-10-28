@@ -9,7 +9,9 @@ function LoginPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === "duoc@duocuc.cl" && password === "1234") {
+    const registeredPassword = localStorage.getItem(email);
+
+    if (registeredPassword && registeredPassword === password) {
       alert("Login exitoso!");
       navigate("/");
     } else {

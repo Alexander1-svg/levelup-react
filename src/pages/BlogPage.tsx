@@ -40,14 +40,13 @@ function BlogPage() {
 
     setPosts(updatedPosts);
 
-    alert("Publicación eliminada correctamente. 🗑️");
+    alert("Publicación eliminada correctamente.");
   };
 
   return (
     <div className="max-w-6xl mx-auto mt-10 p-8">
       <h1 className="text-4xl font-extrabold mb-8 text-white">Nuestro Blog</h1>
 
-      {/* Botón "Escribir Nuevo Post" */}
       <button
         onClick={() => navigate("/create-post")}
         className="flex items-center bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-lg mb-8"
@@ -56,7 +55,6 @@ function BlogPage() {
         Escribir Nuevo Post
       </button>
 
-      {/* Mostrar publicaciones o el mensaje de vacío */}
       {posts.length === 0 ? (
         <p className="text-xl text-gray-400 mt-10">
           Aún no hay publicaciones. ¡Sé el primero en crear una!
@@ -73,12 +71,10 @@ function BlogPage() {
               </h2>
               <p className="text-gray-300 mb-4 line-clamp-4 flex-grow">
                 {" "}
-                {/* Añadimos flex-grow */}
                 {post.content}
               </p>
 
               <div className="text-sm text-gray-500 border-t border-gray-700 pt-4 mt-auto flex justify-between items-center">
-                {/* BOTÓN DE ELIMINAR */}
                 <button
                   onClick={() => handleDelete(post.id)}
                   className="text-red-500 hover:text-red-400 transition duration-150 p-1 rounded hover:bg-gray-700"
@@ -86,7 +82,6 @@ function BlogPage() {
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>
-                {/* ----------------------- */}
 
                 <div className="flex flex-col items-end">
                   <span>
