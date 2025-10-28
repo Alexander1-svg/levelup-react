@@ -1,4 +1,3 @@
-import React from "react";
 import { useCart as defaultUseCart } from "../components/CartProvider";
 
 interface ProductCardProps {
