@@ -40,7 +40,7 @@ export default function CarritoPage() {
             </div>
             <div className="flex items-center gap-4">
               <span className="font-bold">
-                ${ (p.price * p.quantity).toLocaleString("es-CL") }
+                ${(p.price * p.quantity).toLocaleString("es-CL")}
               </span>
               <button
                 onClick={() => removeFromCart(p.id)}
@@ -55,13 +55,13 @@ export default function CarritoPage() {
 
       <div className="flex justify-between items-center mt-6">
         <span className="text-xl font-bold">
-          Total: ${ total.toLocaleString("es-CL") }
+          Total: ${total.toLocaleString("es-CL")}
         </span>
         <button
           onClick={clearCart}
           className="bg-lime-600 hover:bg-lime-700 px-4 py-2 rounded"
         >
-          Pagar 💸
+          Pagar
         </button>
       </div>
     </div>
