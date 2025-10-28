@@ -1,4 +1,5 @@
-import { useCart } from "../components/CartProvider";
+import React from "react";
+import { useCart as defaultUseCart } from "../components/CartProvider";
 
 interface ProductCardProps {
   id: string;
@@ -6,6 +7,7 @@ interface ProductCardProps {
   title: string;
   description: string;
   price: string;
+  useCartHook?: typeof defaultUseCart;
 }
 
 // 2. Creamos el componente. Recibe los props y los usa para rellenar el HTML.
@@ -15,13 +17,15 @@ export function ProductCard({
   description,
   price,
   id,
+  useCartHook,
+
 }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const { addToCart } = (useCartHook || defaultUseCart)();
   const handleBuyClick = () => {
     addToCart({
       id,
       title,
-      price: Number(price.replace(/\D/g, "")), // convierte "CLP 159.990" a 159990
+      price: Number(price.replace(/\D/g, "")),
       imageUrl,
     });
   };

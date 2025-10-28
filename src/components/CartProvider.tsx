@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type {ReactNode} from "react";
+import React from "react";
 
 // Ahora usamos ProductCardProps para que coincida con tus cards
 export interface CartItem {

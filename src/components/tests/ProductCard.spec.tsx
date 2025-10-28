@@ -1,21 +1,12 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ProductCard } from "../ProductCard";
-import * as CartProviderModule from "../CartProvider";
 
 describe("ProductCard", () => {
   let addToCartSpy: jasmine.Spy;
 
   beforeEach(() => {
-    // Mockeamos useCart con todos los campos necesarios
     addToCartSpy = jasmine.createSpy("addToCart");
-    spyOn(CartProviderModule, "useCart").and.returnValue({
-      cart: [],
-      addToCart: addToCartSpy,
-      removeFromCart: () => {},
-      clearCart: () => {},
-      total: 0
-    });
   });
 
   const productProps = {
@@ -26,8 +17,17 @@ describe("ProductCard", () => {
     price: "CLP 159.990",
   };
 
+  // Hook mock que será inyectado
+  const mockUseCart = () => ({
+    cart: [],
+    addToCart: addToCartSpy,
+    removeFromCart: () => {},
+    clearCart: () => {},
+    total: 0,
+  });
+
   it("renders correctly with props", () => {
-    render(<ProductCard {...productProps} />);
+    render(<ProductCard {...productProps} useCartHook={mockUseCart} />);
     expect(screen.getByText(productProps.title)).toBeDefined();
     expect(screen.getByText(productProps.description)).toBeDefined();
     expect(screen.getByText(productProps.price)).toBeDefined();
@@ -38,7 +38,7 @@ describe("ProductCard", () => {
   });
 
   it("calls addToCart with correct data when Comprar button is clicked", () => {
-    render(<ProductCard {...productProps} />);
+    render(<ProductCard {...productProps} useCartHook={mockUseCart} />);
     const button = screen.getByText("Comprar");
     fireEvent.click(button);
 

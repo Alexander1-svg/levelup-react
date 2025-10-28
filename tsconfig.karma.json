@@ -7,12 +7,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "types": ["jasmine", "node"],
-    "noEmit": false
+    "noEmit": true
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/components/tests/**/*.spec.ts",
-    "src/components/tests/**/*.spec.tsx"
+    "src/**/*.tsx"
   ]
 }
