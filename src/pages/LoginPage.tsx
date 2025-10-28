@@ -12,7 +12,6 @@ function LoginPage() {
     const registeredPassword = localStorage.getItem(email);
 
     if (registeredPassword && registeredPassword === password) {
-      alert("Login exitoso!");
       navigate("/");
     } else {
       alert("Email o contraseña incorrecta");
