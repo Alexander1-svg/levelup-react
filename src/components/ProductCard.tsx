@@ -1,4 +1,4 @@
-import { useCart as defaultUseCart } from "../components/CartProvider";
+import { useCart } from "../components/CartProvider";
 
 interface ProductCardProps {
   id: string;
@@ -6,7 +6,6 @@ interface ProductCardProps {
   title: string;
   description: string;
   price: string;
-  useCartHook?: typeof defaultUseCart;
 }
 
 export function ProductCard({
@@ -15,9 +14,8 @@ export function ProductCard({
   description,
   price,
   id,
-  useCartHook,
 }: ProductCardProps) {
-  const { addToCart } = (useCartHook || defaultUseCart)();
+  const { addToCart } = useCart();
   const handleBuyClick = () => {
     addToCart({
       id,
