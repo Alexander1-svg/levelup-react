@@ -11,7 +11,7 @@ export function Header() {
                 <img
                   src="/img/logolevelupgamer.png"
                   alt="Level-up Gamer"
-                  className="h-18 w-26 mr-2"
+                  className="h-20 w-27 mr-2"
                 />
               </Link>
             </nav>
