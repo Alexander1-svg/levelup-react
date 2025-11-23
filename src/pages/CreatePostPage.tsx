@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../pages/AuthContext";
 
 function CreatePostPage() {
+  const { currentUser } = useAuth();
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const navigate = useNavigate();
+
+  if (!currentUser) {
+    navigate("/login");
+    return null;
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,17 +25,17 @@ function CreatePostPage() {
       id: Date.now(),
       title: title,
       content: content,
-      date: new Date().toLocaleDateString(),
-      author: "Usuario Actual",
+      date: new Date().toLocaleDateString("es-CL"),
+      author: currentUser.fullName,
     };
 
     const existingPosts = JSON.parse(localStorage.getItem("blogPosts") || "[]");
 
-    existingPosts.push(newPost);
+    existingPosts.unshift(newPost);
 
     localStorage.setItem("blogPosts", JSON.stringify(existingPosts));
 
-    alert("¡Blog creado exitosamente!");
+    alert(`¡Blog creado exitosamente por ${currentUser.fullName}!`);
     navigate("/blog");
   };
 
@@ -37,6 +44,12 @@ function CreatePostPage() {
       <h1 className="text-3xl font-bold mb-6 text-white">
         Crear Nueva Publicación
       </h1>
+      <p className="text-gray-400 mb-6">
+        Publicando como:{" "}
+        <span className="text-sky-400 font-semibold">
+          {currentUser.fullName}
+        </span>
+      </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div>
           <label
