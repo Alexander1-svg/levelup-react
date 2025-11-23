@@ -11,11 +11,15 @@ export function Header() {
                 <img
                   src="/img/logolevelupgamer.png"
                   alt="Level-up Gamer"
-                  className="h-16 w-24"
+                  className="h-16 w-22"
                 />
               </Link>
             </nav>
           </button>
+          <span className="flex">
+            Level<p className="text-lime-500">UP</p>
+            <p className="text-sky-300">Gamer</p>
+          </span>
         </div>
 
         <nav className="flex gap-6 flex-1 justify-center text-white">

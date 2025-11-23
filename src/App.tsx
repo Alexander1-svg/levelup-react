@@ -13,7 +13,7 @@ import { NosotrosPage } from "./pages/NosotrosPage";
 export function App() {
   return (
     <CartProvider>
-      <div className="bg-linear-to-br from-black via-black to-slate-600">
+      <div className="bg-black">
         <Header />
 
         <main className="grow">
