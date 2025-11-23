@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Definimos la estructura esperada para el objeto de usuario
@@ -38,7 +38,6 @@ export function DashboardPage() {
     <div className="max-w-xl mx-auto mt-10 p-8 bg-gray-800 rounded-lg shadow-xl text-white">
       <h1 className="text-3xl font-bold mb-4">Bienvenid@ a tu Cuenta</h1>
       <hr className="border-gray-700 mb-6" />
-      {/* Aquí se MUESTRA el Nombre y el Correo */} 
       <div className="space-y-4">
         <div>
           <p className="text-lg font-semibold text-gray-400">
