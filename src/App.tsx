@@ -14,9 +14,14 @@ import { AuthProvider } from "./pages/AuthContext";
 export function App() {
   return (
     <CartProvider>
+<<<<<<< HEAD
       <AuthProvider>
         <div className="bg-black font-sans min-h-screen text-white flex flex-col">
           <Header />
+=======
+      <div className="bg-black min-h-screen flex flex-col">
+        <Header />
+>>>>>>> test
 
           <main className="flex-grow">
             <Routes>

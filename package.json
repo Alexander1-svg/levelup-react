@@ -11,10 +11,12 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.17",
     "lucide-react": "^0.548.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.4"
+    "react-router-dom": "^7.9.4",
+    "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
@@ -22,6 +24,7 @@
     "@babel/preset-react": "^7.28.5",
     "@babel/preset-typescript": "^7.28.5",
     "@eslint/js": "^9.36.0",
+    "@midudev/tailwind-animations": "^0.2.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
@@ -33,7 +36,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^5.0.4",
     "@vitejs/plugin-react-swc": "^4.2.0",
-    "autoprefixer": "^10.4.21",
+    "autoprefixer": "^10.4.22",
     "babel-loader": "^10.0.0",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -43,7 +46,6 @@
     "jsdom": "^27.0.1",
     "karma-typescript": "^5.5.4",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.16",
     "ts-loader": "^9.5.4",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",

@@ -1,9 +1,9 @@
 export function Footer() {
   return (
-    <footer className="bg-blue-950 text-gray-200 py-8 mt-8">
+    <footer className="bg-black text-gray-200 py-8 mt-8 font-light">
       <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex flex-col gap-2 text-center md:text-left">
-          <span className="font-bold text-lg">Contacto</span>
+          <span className="text-lg">Contacto</span>
           <span>
             Email:{" "}
             <a
