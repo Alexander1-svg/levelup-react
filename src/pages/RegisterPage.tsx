@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export function RegisterPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // 1. Nuevo estado para el nombre completo
+  const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -13,11 +14,22 @@ export function RegisterPage() {
     if (password !== confirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
-    }
-    //Manejo de Logica de registro
-    localStorage.setItem(email, password);
+    } // Verificar si el email ya está registrado
 
-    alert(`Usuario registrado: ${email}`);
+    if (localStorage.getItem(email)) {
+      alert("Este correo electrónico ya está registrado.");
+      return;
+    } // 2. Manejo de Logica de registro: Guardar un objeto JSON
+
+    const userData = {
+      fullName: fullName, // Incluimos el nombre completo
+      password: password,
+      email: email,
+    }; // Guardamos el objeto de usuario serializado como una cadena JSON
+
+    localStorage.setItem(email, JSON.stringify(userData));
+
+    alert(`Usuario registrado: ${fullName} (${email})`);
     navigate("/login");
   };
 
@@ -27,6 +39,27 @@ export function RegisterPage() {
         Registro de Usuario
       </h1>
       <form onSubmit={handleRegister} className="flex flex-col gap-4">
+        {/* Nuevo campo para el Nombre Completo */}
+        <div>
+          <label
+            htmlFor="fullName"
+            className="block text-gray-300 text-sm font-bold mb-2"
+          >
+            Nombre Completo
+          </label>
+          <input
+            type="text"
+            id="fullName"
+            placeholder="Nombre Completo"
+            className="p-2 rounded bg-gray-700 text-white w-full"
+            value={fullName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setFullName(e.target.value)
+            }
+            required
+          />
+        </div>
+        {/* Resto de campos (Email, Contraseña, Confirmar Contraseña) */}
         <div>
           <label
             htmlFor="email"

@@ -8,29 +8,32 @@ import CreatePostPage from "./pages/CreatePostPage";
 import CarritoPage from "./pages/CarritoPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
+import { DashboardPage } from "./pages/DashboardPage";
 import { NosotrosPage } from "./pages/NosotrosPage";
+import { AuthProvider } from "./pages/AuthContext";
 
 export function App() {
   return (
     <CartProvider>
-      <div className="bg-black font-sans min-h-screen text-white flex flex-col">
-        <Header />
+      <AuthProvider>
+        <div className="bg-black font-sans min-h-screen text-white flex flex-col">
+          <Header />
 
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
 
-            <Route path="/nosotros" element={<NosotrosPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/create-post" element={<CreatePostPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/carrito" element={<CarritoPage />} />
-          </Routes>
-        </main>
-
-        <Footer />
-      </div>
+              <Route path="/nosotros" element={<NosotrosPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/create-post" element={<CreatePostPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/carrito" element={<CarritoPage />} />
+            </Routes>
+          </main>
+        </div>
+      </AuthProvider>
     </CartProvider>
   );
 }
