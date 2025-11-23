@@ -53,7 +53,6 @@ function BlogPage() {
   return (
     <div className="max-w-6xl mx-auto mt-10 p-8">
       <h1 className="text-4xl font-extrabold mb-8 text-white">Nuestro Blog</h1>
-      {/* Muestra el botón de crear post SÓLO si hay un usuario logueado */}
       {currentUser && (
         <button
           onClick={() => navigate("/create-post")}
@@ -81,7 +80,6 @@ function BlogPage() {
                 {post.content}
               </p>
               <div className="text-sm text-gray-500 border-t border-gray-700 pt-4 mt-auto flex justify-between items-center">
-                {/* Muestra el botón de eliminar SÓLO si el usuario actual es el autor */}
                 {currentUser && currentUser.fullName === post.author && (
                   <button
                     onClick={() => handleDelete(post.id, post.author)}

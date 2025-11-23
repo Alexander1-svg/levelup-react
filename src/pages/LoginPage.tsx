@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../pages/AuthContext"; // Asegúrate de la ruta correcta
+import { useAuth } from "../pages/AuthContext";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth(); // Usamos el hook para obtener la función login
+  const { login } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -17,7 +17,6 @@ export function LoginPage() {
       const userData = JSON.parse(userDataJSON);
 
       if (userData.password === password) {
-        // INICIO DE SESIÓN EXITOSO: Usamos la función del contexto
         login(userData);
 
         alert(`¡Bienvenido de nuevo, ${userData.fullName}!`);
@@ -29,7 +28,6 @@ export function LoginPage() {
   };
 
   return (
-    // ... (cuerpo del formulario de login similar a RegisterPage)
     <div className="max-w-md mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-white">Iniciar Sesión</h1>
       <form onSubmit={handleLogin} className="flex flex-col gap-4">
