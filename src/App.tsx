@@ -13,10 +13,10 @@ import { NosotrosPage } from "./pages/NosotrosPage";
 export function App() {
   return (
     <CartProvider>
-      <div className="bg-black">
+      <div className="bg-black min-h-screen flex flex-col">
         <Header />
 
-        <main className="grow">
+        <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
 
