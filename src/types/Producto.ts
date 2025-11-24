@@ -1,5 +1,3 @@
-// src/types/Producto.ts
-
 export interface Producto {
   id: number;
   codigo: string;
@@ -8,5 +6,5 @@ export interface Producto {
   precio: number;
   stock: number;
   nombreCategoria: string;
-  imageUrl: string;
+  imagenUrl: string;
 }
