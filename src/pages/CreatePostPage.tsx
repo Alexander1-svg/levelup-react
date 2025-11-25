@@ -3,13 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../pages/AuthContext";
 
 function CreatePostPage() {
-  const { currentUser } = useAuth();
+  const { user, isAuthenticated } = useAuth(); // Cambiado a user e isAuthenticated
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const navigate = useNavigate();
 
-  if (!currentUser) {
-    navigate("/login");
+  // Redirigir si no está autenticado
+  React.useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Si no está autenticado, mostrar nada mientras redirige
+  if (!isAuthenticated || !user) {
     return null;
   }
 
@@ -26,16 +33,14 @@ function CreatePostPage() {
       title: title,
       content: content,
       date: new Date().toLocaleDateString("es-CL"),
-      author: currentUser.fullName,
+      author: user.fullName, // Usar user en lugar de currentUser
     };
 
     const existingPosts = JSON.parse(localStorage.getItem("blogPosts") || "[]");
-
     existingPosts.unshift(newPost);
-
     localStorage.setItem("blogPosts", JSON.stringify(existingPosts));
 
-    alert(`¡Blog creado exitosamente por ${currentUser.fullName}!`);
+    alert(`¡Blog creado exitosamente por ${user.fullName}!`);
     navigate("/blog");
   };
 
@@ -45,10 +50,8 @@ function CreatePostPage() {
         Crear Nueva Publicación
       </h1>
       <p className="text-gray-400 mb-6">
-        Publicando como:{" "}
-        <span className="text-sky-400 font-semibold">
-          {currentUser.fullName}
-        </span>
+        Publicando por:{" "}
+        <span className="text-sky-400 font-semibold">{user.fullName}</span>
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div>
@@ -65,7 +68,8 @@ function CreatePostPage() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setTitle(e.target.value)
             }
-            className="w-full p-3 rounded bg-gray-700 text-white"
+            className="w-full p-3 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none"
+            placeholder="Escribe un título..."
             required
           />
         </div>
@@ -83,16 +87,26 @@ function CreatePostPage() {
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setContent(e.target.value)
             }
-            className="w-full p-3 rounded bg-gray-700 text-white resize-none"
+            className="w-full p-3 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none resize-vertical"
+            placeholder="Comparte tus ideas, experiencias o noticias con la comunidad..."
             required
           ></textarea>
         </div>
-        <button
-          type="submit"
-          className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded transition duration-200"
-        >
-          Publicar Blog
-        </button>
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded transition duration-200 flex-1"
+          >
+            Publicar Blog
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/blog")}
+            className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded transition duration-200"
+          >
+            Cancelar
+          </button>
+        </div>
       </form>
     </div>
   );
