@@ -4,6 +4,7 @@ export function NosotrosPage() {
       <h1 className="text-4xl font- text-sky-400 mb-6 text-center">
         Quiénes Somos
       </h1>
+
       <div className="p-6 rounded-lg shadow-lg">
         <p className="text-gray-300 text-lg leading-relaxed">
           Level-Up Gamer es una tienda online dedicada a satisfacer las
