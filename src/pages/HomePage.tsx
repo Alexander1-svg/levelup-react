@@ -4,11 +4,11 @@ const categorias = [
   { nombre: "Accesorios y Perifericos", slug: "Accesorios" },
   { nombre: "Consolas", slug: "Consolas" },
   { nombre: "PCs y Laptops Gamer", slug: "Computadores" },
-  { nombre: "Sillas Gamer", slug: "Silla_Gamer" },
-  { nombre: "Mouse y Teclados Gamer", slug: "Mouse_Teclado" },
-  { nombre: "Mousepads", slug: "Mousepadds" },
-  { nombre: "Ropa personalizada", slug: "Poleras_Polerones" },
-  { nombre: "Juegos de Mesa", slug: "Juegos_de_Mesa" },
+  { nombre: "Sillas Gamer", slug: "Sillas Gamer" },
+  { nombre: "Mouse y Teclados Gamer", slug: "Mouse y Teclado" },
+  { nombre: "Mousepads", slug: "Mousepads" },
+  { nombre: "Ropa personalizada", slug: "Poleras y Polerones" },
+  { nombre: "Juegos de Mesa", slug: "Juegos de Mesa" },
 ];
 
 function Hero() {
@@ -32,7 +32,6 @@ export function HomePage() {
       <Hero />
       <div className="container mx-auto px-4 pb-12">
         {/* Categorías */}
-        {/* CORREGIDO: Limpié las clases repetidas (tenías grid-cols y gap duplicados) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 p-6 m-4 md:m-20 justify-items-center">
           {categorias.map((cat) => (
             <Link

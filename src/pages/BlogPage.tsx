@@ -14,7 +14,7 @@ interface BlogPost {
 function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth(); // Cambiado a user e isAuthenticated
+  const { user, isAuthenticated } = useAuth();
 
   const loadPosts = () => {
     const existingPosts = JSON.parse(localStorage.getItem("blogPosts") || "[]");

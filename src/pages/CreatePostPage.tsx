@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../pages/AuthContext";
 
 function CreatePostPage() {
-  const { user, isAuthenticated } = useAuth(); // Cambiado a user e isAuthenticated
+  const { user, isAuthenticated } = useAuth();
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const navigate = useNavigate();
