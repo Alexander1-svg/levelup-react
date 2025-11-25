@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../pages/AuthContext";
+import { User, ShoppingCart } from "lucide-react";
 
 export function Header() {
   const { user, logout, isAuthenticated } = useAuth();
@@ -53,13 +54,12 @@ export function Header() {
         {/* Login y carrito - VERSIÓN CON SALUDO CLICKEABLE */}
         <div className="flex items-center shrink-0 gap-4">
           {/* Carrito - SIEMPRE VISIBLE */}
-          <button className="relative hover:scale-110 transition-transform sm:w-auto md:w-auto lg:w-auto">
+          <button>
             <nav>
               <Link to="/carrito">
-                <img
-                  src="/img/IconoCarrito.png"
-                  alt="Carrito de compras"
-                  className="flex h-7 w-15 hover:bg-gray-800/70 rounded-3xl"
+                <ShoppingCart
+                  className="mr-2 h-8 w-8 text-white hover:drop-shadow hover:drop-shadow-sky-200 
+                rounded-xl hover:scale-110 transition-transform"
                 />
               </Link>
             </nav>
@@ -68,21 +68,12 @@ export function Header() {
           {/* Estado de autenticación */}
           {isAuthenticated ? (
             <>
-              {/* Saludo al usuario - AHORA ES CLICKEABLE */}
-              <Link
-                to="/dashboard"
-                className="text-gray-300 text-sm bg-gray-700 px-3 py-1 rounded hover:bg-gray-600 hover:scale-105 transition-transform cursor-pointer"
-              >
-                ¡Hola, {user?.fullName}!
+              <Link to="/dashboard">
+                <User
+                  className="p-1 mr-2 h-9 w-9 text-white bg-linear-to-br from-lime-400 via-lime-600
+                 to-cyan-500 rounded-full hover:scale-110 transition-transform hover:drop-shadow hover:drop-shadow-cyan-400"
+                />
               </Link>
-
-              {/* Botón de Cerrar Sesión */}
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white font-light px-3 py-1 rounded hover:scale-110 transition-transform"
-              >
-                Cerrar Sesión
-              </button>
             </>
           ) : (
             /* Botón de Iniciar Sesión (cuando no está logueado) */
