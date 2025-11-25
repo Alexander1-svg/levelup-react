@@ -1,35 +1,63 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../pages/AuthContext";
+import type { LoginFormData } from "../types/Usuario";
 
 export function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    const userDataJSON = localStorage.getItem(email);
+    try {
+      // Simular una pequeña demora para mejor UX
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-    if (userDataJSON) {
+      const userDataJSON = localStorage.getItem(formData.email);
+
+      if (!userDataJSON) {
+        throw new Error("Usuario no encontrado");
+      }
+
       const userData = JSON.parse(userDataJSON);
 
-      if (userData.password === password) {
-        login(userData);
-
-        alert(`¡Bienvenido de nuevo, ${userData.fullName}!`);
-        navigate("/dashboard");
-        return;
+      if (userData.password !== formData.password) {
+        throw new Error("Contraseña incorrecta");
       }
+
+      // Login exitoso
+      login(userData);
+
+      console.log(`¡Bienvenido de nuevo, ${userData.fullName}!`);
+      navigate("/dashboard", { replace: true });
+    } catch (error) {
+      console.error("Error en login:", error);
+      alert(error instanceof Error ? error.message : "Error al iniciar sesión");
+    } finally {
+      setIsLoading(false);
     }
-    alert("Correo electrónico o contraseña incorrectos.");
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-6 text-white">Iniciar Sesión</h1>
+      <h1 className="text-2xl font-bold mb-6 text-white text-center">
+        Iniciar Sesión
+      </h1>
       <form onSubmit={handleLogin} className="flex flex-col gap-4">
         <div>
           <label
@@ -41,11 +69,13 @@ export function LoginPage() {
           <input
             type="email"
             id="email"
+            name="email"
             placeholder="Correo electrónico"
-            className="p-2 rounded bg-gray-700 text-white w-full"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            className="p-2 rounded bg-gray-700 text-white w-full border border-gray-600 focus:border-blue-500 focus:outline-none"
+            value={formData.email}
+            onChange={handleChange}
             required
+            disabled={isLoading}
           />
         </div>
         <div>
@@ -58,23 +88,29 @@ export function LoginPage() {
           <input
             type="password"
             id="password"
+            name="password"
             placeholder="Contraseña"
-            className="p-2 rounded bg-gray-700 text-white w-full"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            className="p-2 rounded bg-gray-700 text-white w-full border border-gray-600 focus:border-blue-500 focus:outline-none"
+            value={formData.password}
+            onChange={handleChange}
             required
+            disabled={isLoading}
           />
         </div>
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 p-2 rounded text-white font-bold"
+          className="bg-blue-600 hover:bg-blue-700 p-2 rounded text-white font-bold disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
+          disabled={isLoading}
         >
-          Entrar
+          {isLoading ? "Iniciando sesión..." : "Entrar"}
         </button>
       </form>
-      <p className="mt-4 text-sm text-gray-300">
+      <p className="mt-4 text-sm text-gray-300 text-center">
         ¿No tienes cuenta?{" "}
-        <Link to="/register" className="text-blue-400 underline">
+        <Link
+          to="/register"
+          className="text-blue-400 hover:text-blue-300 underline transition-colors"
+        >
           Regístrate aquí
         </Link>
       </p>

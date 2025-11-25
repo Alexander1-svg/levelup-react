@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../pages/AuthContext";
 
 export function Header() {
+  const { user, logout, isAuthenticated } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
-    <header className="text-white font-semibold font-mono">
+    <header className="text-white font-semibold font-mono bg-gray-800 shadow-lg">
       <div className="mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center shrink-0 gap-4">
           <button>
@@ -43,9 +50,9 @@ export function Header() {
           </Link>
         </nav>
 
-        {/* Login y carrito */}
+        {/* Login y carrito - VERSIÓN CON SALUDO CLICKEABLE */}
         <div className="flex items-center shrink-0 gap-4">
-          {/* Carrito */}
+          {/* Carrito - SIEMPRE VISIBLE */}
           <button className="relative hover:scale-110 transition-transform sm:w-auto md:w-auto lg:w-auto">
             <nav>
               <Link to="/carrito">
@@ -57,12 +64,34 @@ export function Header() {
               </Link>
             </nav>
           </button>
-          {/* Login */}
-          <button className="bg-sky-500 hover:bg-sky-700 text-white font-light px-3 py-1 rounded hover:scale-110 hover:contrast-100 transition-transform">
-            <nav>
-              <Link to="/login">Iniciar sesión</Link>
-            </nav>
-          </button>
+
+          {/* Estado de autenticación */}
+          {isAuthenticated ? (
+            <>
+              {/* Saludo al usuario - AHORA ES CLICKEABLE */}
+              <Link
+                to="/dashboard"
+                className="text-gray-300 text-sm bg-gray-700 px-3 py-1 rounded hover:bg-gray-600 hover:scale-105 transition-transform cursor-pointer"
+              >
+                ¡Hola, {user?.fullName}!
+              </Link>
+
+              {/* Botón de Cerrar Sesión */}
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 text-white font-light px-3 py-1 rounded hover:scale-110 transition-transform"
+              >
+                Cerrar Sesión
+              </button>
+            </>
+          ) : (
+            /* Botón de Iniciar Sesión (cuando no está logueado) */
+            <button className="bg-sky-500 hover:bg-sky-700 text-white font-light px-3 py-1 rounded hover:scale-110 hover:contrast-100 transition-transform">
+              <nav>
+                <Link to="/login">Iniciar sesión</Link>
+              </nav>
+            </button>
+          )}
         </div>
       </div>
     </header>

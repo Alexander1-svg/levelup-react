@@ -1,37 +1,21 @@
-import { useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
-
-// Definimos la estructura esperada para el objeto de usuario
-interface UserData {
-  fullName: string;
-  email: string; // password: string; // La contraseña no es necesaria aquí, pero estaba en el objeto original
-}
 
 export function DashboardPage() {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState<UserData | null>(null);
-
-  useEffect(() => {
-    // 1. Recuperar la cadena JSON del usuario de sessionStorage
-    const userString = sessionStorage.getItem("currentUser");
-
-    if (userString) {
-      // 2. Si existe, deserializar y guardar en el estado
-      const userData: UserData = JSON.parse(userString);
-      setCurrentUser(userData);
-    } else {
-      // Si no hay usuario, redirigir al login (sesión expirada/no iniciada)
-      navigate("/login");
-    }
-  }, [navigate]); // Función para cerrar sesión y limpiar el almacenamiento
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    sessionStorage.removeItem("currentUser");
+    logout();
     navigate("/login");
   };
 
-  if (!currentUser) {
-    return <div className="text-white">Cargando...</div>;
+  if (!user) {
+    return (
+      <div className="max-w-xl mx-auto mt-10 p-8 bg-gray-800 rounded-lg shadow-xl text-white">
+        <div className="text-white text-center">Cargando...</div>
+      </div>
+    );
   }
 
   return (
@@ -43,15 +27,13 @@ export function DashboardPage() {
           <p className="text-lg font-semibold text-gray-400">
             Nombre Completo:
           </p>
-          <p className="text-2xl font-bold text-green-400">
-            {currentUser.fullName}
-          </p>
+          <p className="text-2xl font-bold text-green-400">{user.fullName}</p>
         </div>
         <div>
           <p className="text-lg font-semibold text-gray-400">
             Correo Electrónico:
           </p>
-          <p className="text-xl text-blue-400">{currentUser.email}</p>
+          <p className="text-xl text-blue-400">{user.email}</p>
         </div>
       </div>
       <button
