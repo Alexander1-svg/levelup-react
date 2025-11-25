@@ -7,6 +7,7 @@ export function RegisterPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [birthDate, setBirthDate] = useState<string>("");
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,6 +16,31 @@ export function RegisterPage() {
       alert("Las contraseñas no coinciden");
       return;
     } // Verificar si el email ya está registrado
+
+    // Validar fecha de nacimiento
+    if (!birthDate) {
+      alert("Por favor, ingresa tu fecha de nacimiento");
+      return;
+    }
+
+    // Calcular edad
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear(); // Cambia const por let
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDateObj.getDate())
+    ) {
+      age--; // Ahora puedes modificar age porque es let
+    }
+
+    // Validar que sea mayor de 18 años
+    if (age < 18) {
+      alert("Debes tener al menos 18 años para registrarte");
+      return;
+    }
 
     if (localStorage.getItem(email)) {
       alert("Este correo electrónico ya está registrado.");
@@ -116,6 +142,27 @@ export function RegisterPage() {
             }
             required
           />
+        </div>
+        <div>
+          <label
+            htmlFor="birthDate"
+            className="block text-gray-300 text-sm font-bold mb-2"
+          >
+            Fecha de Nacimiento
+          </label>
+          <input
+            type="date"
+            id="birthDate"
+            className="p-2 rounded bg-gray-700 text-white w-full border border-gray-600 focus:border-blue-500 focus:outline-none"
+            value={birthDate}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setBirthDate(e.target.value)
+            }
+            required
+          />
+          <p className="text-gray-400 text-xs mt-1">
+            Debes tener al menos 18 años para registrarte
+          </p>
         </div>
         <button
           type="submit"
