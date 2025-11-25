@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../pages/AuthContext";
 import type { LoginFormData } from "../types/Usuario";
+import { loginUsuario } from "../api/usuarioApi";
+
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -26,24 +28,16 @@ export function LoginPage() {
 
     try {
       // Simular una pequeña demora para mejor UX
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      const response = await loginUsuario(formData.email, formData.password);
 
-      const userDataJSON = localStorage.getItem(formData.email);
+      // Guardar token en localStorage o contexto
+      localStorage.setItem("token", response.token);
 
-      if (!userDataJSON) {
-        throw new Error("Usuario no encontrado");
-      }
+      // Pasar info al contexto de autenticación
+      login({ email: response.email, token: response.token });
 
-      const userData = JSON.parse(userDataJSON);
+      console.log(`¡Bienvenido de nuevo, ${response.email}!`);
 
-      if (userData.password !== formData.password) {
-        throw new Error("Contraseña incorrecta");
-      }
-
-      // Login exitoso
-      login(userData);
-
-      console.log(`¡Bienvenido de nuevo, ${userData.fullName}!`);
       navigate("/dashboard", { replace: true });
     } catch (error) {
       console.error("Error en login:", error);

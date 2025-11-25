@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { crearUsuario } from "../api/usuarioApi";
+
 
 export function RegisterPage() {
   const navigate = useNavigate(); // 1. Nuevo estado para el nombre completo
-  const [fullName, setFullName] = useState<string>("");
+  const [nombre, setNombre] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [birthDate, setBirthDate] = useState<string>("");
+  const [fechaNacimiento, setFechaNacimiento] = useState<string>("");
 
-  const handleRegister = (e: React.FormEvent) => {
+
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -18,14 +21,14 @@ export function RegisterPage() {
     } // Verificar si el email ya está registrado
 
     // Validar fecha de nacimiento
-    if (!birthDate) {
+    if (!fechaNacimiento) {
       alert("Por favor, ingresa tu fecha de nacimiento");
       return;
     }
 
     // Calcular edad
     const today = new Date();
-    const birthDateObj = new Date(birthDate);
+    const birthDateObj = new Date(fechaNacimiento);
     let age = today.getFullYear() - birthDateObj.getFullYear(); // Cambia const por let
     const monthDiff = today.getMonth() - birthDateObj.getMonth();
 
@@ -41,22 +44,29 @@ export function RegisterPage() {
       alert("Debes tener al menos 18 años para registrarte");
       return;
     }
+    try {
+      await crearUsuario({
+        nombre,
+        email,
+        password,
+        fechaNacimiento
+      });
+      alert("Usuario registrado correctamente");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      alert("Error al registrar usuario");
+    }
+    
 
-    if (localStorage.getItem(email)) {
-      alert("Este correo electrónico ya está registrado.");
-      return;
-    } // 2. Manejo de Logica de registro: Guardar un objeto JSON
+    
 
-    const userData = {
-      fullName: fullName, // Incluimos el nombre completo
-      password: password,
-      email: email,
-    }; // Guardamos el objeto de usuario serializado como una cadena JSON
+    
 
-    localStorage.setItem(email, JSON.stringify(userData));
+    
 
-    alert(`Usuario registrado: ${fullName} (${email})`);
-    navigate("/login");
+    
+    
   };
 
   return (
@@ -68,19 +78,19 @@ export function RegisterPage() {
         {/* Nuevo campo para el Nombre Completo */}
         <div>
           <label
-            htmlFor="fullName"
+            htmlFor="nombre"
             className="block text-gray-300 text-sm font-bold mb-2"
           >
             Nombre Completo
           </label>
           <input
             type="text"
-            id="fullName"
+            id="nombre"
             placeholder="Nombre Completo"
             className="p-2 rounded bg-gray-700 text-white w-full"
-            value={fullName}
+            value={nombre}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFullName(e.target.value)
+              setNombre(e.target.value)
             }
             required
           />
@@ -145,18 +155,18 @@ export function RegisterPage() {
         </div>
         <div>
           <label
-            htmlFor="birthDate"
+            htmlFor="fechaNacimiento"
             className="block text-gray-300 text-sm font-bold mb-2"
           >
             Fecha de Nacimiento
           </label>
           <input
             type="date"
-            id="birthDate"
+            id="fechaNacimiento"
             className="p-2 rounded bg-gray-700 text-white w-full border border-gray-600 focus:border-blue-500 focus:outline-none"
-            value={birthDate}
+            value={fechaNacimiento}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setBirthDate(e.target.value)
+              setFechaNacimiento(e.target.value)
             }
             required
           />
