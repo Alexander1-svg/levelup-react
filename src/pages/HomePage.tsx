@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ProductCard } from "../components/ProductCard";
 
 const categorias = [
   {
