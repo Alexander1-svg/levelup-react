@@ -9,7 +9,7 @@ export function Header() {
   };
 
   return (
-    <header className="text-white font-semibold font-mono bg-gray-800 shadow-lg">
+    <header className="text-white font-semibold font-mono bg-black shadow-lg">
       <div className="mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center shrink-0 gap-4">
           <button>

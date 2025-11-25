@@ -1,38 +1,14 @@
 import { Link } from "react-router-dom";
 
 const categorias = [
-  {
-    nombre: "Accesorios y Perifericos",
-    slug: "Accesorios",
-  },
-  {
-    nombre: "Consolas",
-    slug: "Consolas",
-  },
-  {
-    nombre: "PCs y Laptos Gamer",
-    slug: "Computadores",
-  },
-  {
-    nombre: "Sillas Gamer",
-    slug: "Silla_Gamer",
-  },
-  {
-    nombre: "Mouse y Teclados Gamer",
-    slug: "Mouse_Teclado",
-  },
-  {
-    nombre: "Mousepads",
-    slug: "Mousepadds",
-  },
-  {
-    nombre: "Ropa personalizada",
-    slug: "Poleras_Polerones",
-  },
-  {
-    nombre: "Juegos de Mesa",
-    slug: "Juegos_de_Mesa",
-  },
+  { nombre: "Accesorios y Perifericos", slug: "Accesorios" },
+  { nombre: "Consolas", slug: "Consolas" },
+  { nombre: "PCs y Laptops Gamer", slug: "Computadores" },
+  { nombre: "Sillas Gamer", slug: "Silla_Gamer" },
+  { nombre: "Mouse y Teclados Gamer", slug: "Mouse_Teclado" },
+  { nombre: "Mousepads", slug: "Mousepadds" },
+  { nombre: "Ropa personalizada", slug: "Poleras_Polerones" },
+  { nombre: "Juegos de Mesa", slug: "Juegos_de_Mesa" },
 ];
 
 function Hero() {
@@ -56,17 +32,18 @@ export function HomePage() {
       <Hero />
       <div className="container mx-auto px-4 pb-12">
         {/* Categorías */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 m-20 items-center justify-center">
+        {/* CORREGIDO: Limpié las clases repetidas (tenías grid-cols y gap duplicados) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 p-6 m-4 md:m-20 justify-items-center">
           {categorias.map((cat) => (
             <Link
               key={cat.slug}
               to={`/categoria/${cat.slug}`}
               className="relative h-70 w-full flex flex-col items-center justify-center rounded-3xl overflow-hidden
                bg-linear-to-tl from-black via-gray-900 to-slate-900 p-8 border-cyan-700 border-2 hover:drop-shadow-cyan-600 
-               hover:drop-shadow-xl hover:scale-105 hover:contrast-125 transition-transform duration-300 group cursor-pointer m-3"
+               hover:drop-shadow-xl hover:scale-105 hover:contrast-125 transition-transform duration-300 group cursor-pointer"
             >
               {/* Título */}
-              <span className="text-cyan-300 text-3xl w-full text-center font-medium text-2xl block w-2/3">
+              <span className="text-cyan-300 w-full text-center font-medium text-2xl block">
                 {cat.nombre}
               </span>
             </Link>
