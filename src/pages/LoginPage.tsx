@@ -7,6 +7,7 @@ import { loginUsuario } from "../api/usuarioApi";
 export function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
+
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
@@ -26,22 +27,22 @@ export function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Simular una pequeña demora para mejor UX
       const response = await loginUsuario(formData.email, formData.password);
 
-      // Guardar token en localStorage o contexto
-      localStorage.setItem("token", response.token);
+      login({
+        email: response.email,
+        nombre: response.nombre,
+        token: response.token,
+        role: response.role,
+      });
 
-      // Pasar info al contexto de autenticación
-      login({ email: response.email, token: response.token });
+      console.log(`¡Bienvenido, ${response.nombre}! Rol: ${response.role}`);
 
-      console.log(`¡Bienvenido de nuevo, ${response.email}!`);
-
-      //if (response.role === "admin") {
-      //navigate("/admin", { replace: true });
-      //} else {
-      navigate("/dashboard", { replace: true });
-      //}
+      if (response.role === "ROLE_ADMIN") {
+        navigate("/admin", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     } catch (error) {
       console.error("Error en login:", error);
       alert(error instanceof Error ? error.message : "Error al iniciar sesión");

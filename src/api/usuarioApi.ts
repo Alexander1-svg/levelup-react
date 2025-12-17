@@ -6,6 +6,7 @@ export interface LoginResponse {
   email: string;
   nombre: string;
   message: string;
+  role: string;
 }
 
 // Obtener la lista de usuarios (Solo ADMIN)

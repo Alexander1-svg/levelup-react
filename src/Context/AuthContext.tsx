@@ -1,9 +1,11 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
+import Cookies from "js-cookie"; // <--- 1. Importamos la librería
 import type { Usuario } from "../types/Usuario";
 
 interface User extends Usuario {
   token: string;
+  role?: string;
 }
 
 interface AuthContextType {
@@ -18,9 +20,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
-  // Verificar si hay usuario en localStorage al cargar
+  // Cargar usuario desde la Cookie al iniciar la app
   useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
+    const storedUser = Cookies.get("currentUser");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -28,12 +30,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem("currentUser", JSON.stringify(userData));
+    // Guardar en Cookie
+    // La sesión dura 7 días
+    Cookies.set("currentUser", JSON.stringify(userData), { expires: 7 });
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("currentUser");
+    Cookies.remove("currentUser");
   };
 
   const value: AuthContextType = {
