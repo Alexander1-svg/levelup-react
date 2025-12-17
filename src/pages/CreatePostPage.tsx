@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import axios from "axios";
-
-const API_URL = "/api/v1/blog";
+import Cookies from "js-cookie";
+import { crearBlog } from "../api/blogApi";
 
 function CreatePostPage() {
   const { user, isAuthenticated } = useAuth();
@@ -29,24 +28,72 @@ function CreatePostPage() {
       return;
     }
 
+    const tokenFromContext = (user as any)?.token;
+    const cookie = Cookies.get("currentUser");
+    let tokenFromCookie: string | null = null;
+    try {
+      const parsed = cookie ? JSON.parse(cookie) : null;
+      tokenFromCookie = parsed?.token || null;
+    } catch (e) {
+      tokenFromCookie = null;
+    }
+
+    const token = tokenFromContext || tokenFromCookie;
+    if (!token) {
+      alert(
+        "No se ha detectado token de autenticación. Por favor, inicia sesión de nuevo."
+      );
+      navigate("/login");
+      return;
+    }
+
+    console.debug(
+      "Token detectado (fuente):",
+      tokenFromContext ? "context" : tokenFromCookie ? "cookie" : "none"
+    );
+
     const newPostData = {
-      title: title,
-      content: content,
-      author: user.nombre,
+      titulo: title,
+      contenido: content,
+      autor: user.nombre,
+      autorId: (user as any)?.id || (user as any)?._id,
     };
 
     try {
-      await axios.post(API_URL, newPostData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      console.debug("Creando post (payload):", newPostData);
+      await crearBlog(newPostData);
 
       alert(`¡Blog creado exitosamente por ${user.nombre}!`);
       navigate("/blog");
-    } catch (error) {
-      console.error("Error al publicar el post:", error);
-      alert("Fallo la creación del post. Revisa el Backend y la consola.");
+    } catch (error: any) {
+      const status = error?.response?.status;
+      const serverMsgRaw =
+        error?.response?.data?.message ||
+        error?.response?.data ||
+        error?.message ||
+        error;
+      const serverMsg =
+        typeof serverMsgRaw === "object"
+          ? JSON.stringify(serverMsgRaw)
+          : String(serverMsgRaw);
+
+      console.error("Error al publicar el post:", {
+        status,
+        serverMsgRaw,
+        error,
+      });
+
+      if (status === 403) {
+        alert(
+          `Fallo la creación del post. Status: 403. Es posible que tu usuario no tenga permisos (Forbidden). Vuelve a iniciar sesión o contacta al administrador. Detalle: ${serverMsg}`
+        );
+      } else {
+        alert(
+          `Fallo la creación del post. ${status ? `Status: ${status}. ` : ""}${
+            serverMsg || "Revisa el Backend y la consola."
+          }`
+        );
+      }
     }
   };
 
@@ -59,6 +106,7 @@ function CreatePostPage() {
         Publicando por:{" "}
         <span className="text-sky-400 font-semibold">{user.nombre}</span>
       </p>
+      {/* debug panel removed */}
       {/* ... (Tu código de formulario) ... */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div>
@@ -118,5 +166,7 @@ function CreatePostPage() {
     </div>
   );
 }
+
+// TokenDebug removed per user request
 
 export default CreatePostPage;
