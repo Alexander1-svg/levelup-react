@@ -17,7 +17,7 @@ export default function ProductoDetallePage() {
       if (!id) return;
       setLoading(true);
       try {
-        const data = await obtenerProductoPorId(id);
+        const data = await obtenerProductoPorId(Number(id));
         setProducto(data);
       } catch (err) {
         setError("No se pudo cargar el producto.");
@@ -38,19 +38,18 @@ export default function ProductoDetallePage() {
     );
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8 text-white">
+    <div className="min-h-screen bg-gray-950 p-8 text-white">
       {/* Botón Volver */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-gray-400 hover:text-white mb-6 transition-colors"
+        className="flex text-xl items-center gap-2 text-gray-400 hover:text-lime-400 mb-6 transition-colors"
       >
         <ArrowLeft size={20} /> Volver
       </button>
 
-      <div className="max-w-6xl mx-auto bg-gray-800 rounded-xl overflow-hidden shadow-2xl border border-gray-700">
+      <div className="max-w-6xl mx-auto bg-gray-900 rounded-xl overflow-hidden shadow-2xl border shadow-2xl shadow-sky-500/50 border-1 border-sky-700">
         <div className="grid grid-cols-1 md:grid-cols-2">
-          {/* Columna Izquierda: Imagen */}
-          <div className="bg-gray-700 flex items-center justify-center p-8">
+          <div className="bg-slate-700 flex items-center justify-center p-8">
             <img
               src={producto.imagenUrl || "https://via.placeholder.com/500"}
               alt={producto.nombre}
@@ -58,15 +57,11 @@ export default function ProductoDetallePage() {
             />
           </div>
 
-          {/* Columna Derecha: Información */}
           <div className="p-8 md:p-12 flex flex-col justify-center space-y-6">
             <div>
               <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mb-2">
                 {producto.nombre}
               </h1>
-              <span className="inline-block bg-gray-900 text-gray-300 text-xs px-2 py-1 rounded uppercase tracking-wide">
-                Categoría
-              </span>
             </div>
 
             <p className="text-gray-300 text-lg leading-relaxed">
