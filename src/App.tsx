@@ -12,7 +12,7 @@ import { NosotrosPage } from "./pages/NosotrosPage";
 import CategoriaPage from "./pages/CategoriaPage";
 import { Toaster } from "sonner";
 import { DashboardPage } from "./pages/DashboardPage";
-import { AuthProvider } from "./pages/AuthContext";
+import { AuthProvider } from "./Context/AuthContext";
 
 export function App() {
   return (

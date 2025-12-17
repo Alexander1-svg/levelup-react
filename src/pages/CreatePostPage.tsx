@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../pages/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 
 function CreatePostPage() {
   const { user, isAuthenticated } = useAuth();

@@ -4,6 +4,7 @@ import type { Usuario, RegistroUsuarioDTO } from "../types/Usuario";
 export interface LoginResponse {
   token: string;
   email: string;
+  nombre: string;
   message: string;
 }
 

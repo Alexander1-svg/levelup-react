@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../pages/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { User, ShoppingCart } from "lucide-react";
 
 export function Header() {

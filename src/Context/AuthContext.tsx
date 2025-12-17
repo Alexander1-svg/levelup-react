@@ -1,9 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
+import type { Usuario } from "../types/Usuario";
 
-interface User {
-  email: string;
-  password?: string;
+interface User extends Usuario {
   token: string;
 }
 

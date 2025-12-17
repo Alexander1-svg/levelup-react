@@ -1,4 +1,4 @@
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { User, ShoppingCart } from "lucide-react";
 
@@ -22,7 +22,7 @@ export function DashboardPage() {
   return (
     <div className="max-w-xl mx-auto mt-10 p-8 border-3 border-l-emerald-400 rounded-lg shadow-xl text-white p-10 drop-shadow shadow-green-500/50 bg-gray-900">
       <User className="h-30 w-30 bg-linear-to-br from-lime-400 via-violet-600 to-cyan-500 rounded-full p-4">
-        {user.nombre}
+        {user.email}
       </User>
       <br />
       <hr className="border-gray-700 mb-6" />

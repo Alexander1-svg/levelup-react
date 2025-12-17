@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Trash2 } from "lucide-react";
-import { useAuth } from "../pages/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 
 interface BlogPost {
   id: number;

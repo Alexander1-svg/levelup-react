@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../pages/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import type { LoginFormData } from "../types/Usuario";
 import { loginUsuario } from "../api/usuarioApi";
-
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -38,7 +37,11 @@ export function LoginPage() {
 
       console.log(`¡Bienvenido de nuevo, ${response.email}!`);
 
+      //if (response.role === "admin") {
+      //navigate("/admin", { replace: true });
+      //} else {
       navigate("/dashboard", { replace: true });
+      //}
     } catch (error) {
       console.error("Error en login:", error);
       alert(error instanceof Error ? error.message : "Error al iniciar sesión");
