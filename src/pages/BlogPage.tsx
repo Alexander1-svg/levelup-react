@@ -30,7 +30,7 @@ function BlogPage() {
   }, []);
 
   const handleDelete = (postId: number, postAuthor: string) => {
-    if (!user || user.fullName !== postAuthor) {
+    if (!user || user.nombre !== postAuthor) {
       alert("Solo puedes eliminar tus propias publicaciones.");
       return;
     }
@@ -110,7 +110,7 @@ function BlogPage() {
 
               {/* Botón de eliminar (solo para el autor) */}
               <div className="flex justify-between items-center pt-4 border-t border-gray-700">
-                {user && user.fullName === post.author && (
+                {user && user.nombre === post.author && (
                   <button
                     onClick={() => handleDelete(post.id, post.author)}
                     className="flex items-center gap-2 text-red-500 hover:text-red-400 transition duration-150 p-2 rounded hover:bg-gray-700"
