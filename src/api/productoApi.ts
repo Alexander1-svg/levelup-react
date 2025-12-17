@@ -8,7 +8,7 @@ export const obtenerProductos = async (): Promise<Producto[]> => {
 };
 
 // Obtener un producto por ID
-export const obtenerProductoPorId = async (id: string): Promise<Producto> => {
+export const obtenerProductoPorId = async (id: number): Promise<Producto> => {
   const response = await axiosClient.get<Producto>(`/productos/${id}`);
   return response.data;
 };

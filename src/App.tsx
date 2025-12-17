@@ -13,6 +13,8 @@ import CategoriaPage from "./pages/CategoriaPage";
 import { Toaster } from "sonner";
 import { DashboardPage } from "./pages/DashboardPage";
 import { AuthProvider } from "./Context/AuthContext";
+import DashboardAdminPage from "./pages/DashboardAdminPage";
+import ProductoDetallePage from "./pages/ProductoDetailsPage";
 
 export function App() {
   return (
@@ -31,6 +33,8 @@ export function App() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/carrito" element={<CarritoPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/admin" element={<DashboardAdminPage />} />
+              <Route path="/producto/:id" element={<ProductoDetallePage />} />
               <Route
                 path="/categoria/:nombreCategoria"
                 element={<CategoriaPage />}

@@ -38,7 +38,7 @@ export function LoginPage() {
 
       console.log(`¡Bienvenido, ${response.nombre}! Rol: ${response.role}`);
 
-      if (response.role === "ROLE_ADMIN") {
+      if (response.token && response.role === "ROLE_ADMIN") {
         navigate("/admin", { replace: true });
       } else {
         navigate("/dashboard", { replace: true });

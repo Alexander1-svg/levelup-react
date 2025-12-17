@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Trash2 } from "lucide-react";
 import { useAuth } from "../Context/AuthContext";
+import { obtenerBlogs, eliminarBlog } from "../api/blogApi";
+import { obtenerUsuarios } from "../api/usuarioApi";
 
 interface BlogPost {
   id: number;
@@ -16,20 +18,54 @@ function BlogPage() {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
 
-  const loadPosts = () => {
-    const existingPosts = JSON.parse(localStorage.getItem("blogPosts") || "[]");
-    setPosts(existingPosts);
-  };
+  const loadPosts = useCallback(async () => {
+    try {
+      const blogsAny: any[] = await obtenerBlogs();
+
+      let users: any[] = [];
+      try {
+        users = await obtenerUsuarios();
+      } catch (e) {
+        users = [];
+      }
+
+      const userMap = new Map<number, string>();
+      users.forEach((u) => {
+        if (u && typeof u.id !== "undefined")
+          userMap.set(u.id, u.nombre || u.email || "Desconocido");
+      });
+
+      const normalized: BlogPost[] = blogsAny.map((b: any) => {
+        const authorFromString = b.autor ?? b.author;
+        const authorId =
+          b.autorId ?? b.authorId ?? b.userId ?? b.autor_id ?? b.author_id;
+
+        let authorName = "Desconocido";
+        if (typeof authorFromString === "string") authorName = authorFromString;
+        else if (authorId && userMap.has(Number(authorId)))
+          authorName = userMap.get(Number(authorId)) as string;
+
+        return {
+          id: b.id,
+          title: b.titulo ?? b.title ?? "Sin título",
+          content: b.contenido ?? b.content ?? "",
+          date: b.fechaPublicacion ?? b.date ?? "",
+          author: authorName,
+        } as BlogPost;
+      });
+
+      setPosts(normalized);
+    } catch (error) {
+      console.error("Error al cargar posts:", error);
+      setPosts([]);
+    }
+  }, []);
 
   useEffect(() => {
     loadPosts();
-    window.addEventListener("storage", loadPosts);
-    return () => {
-      window.removeEventListener("storage", loadPosts);
-    };
-  }, []);
+  }, [loadPosts]);
 
-  const handleDelete = (postId: number, postAuthor: string) => {
+  const handleDelete = async (postId: number, postAuthor: string) => {
     if (!user || user.nombre !== postAuthor) {
       alert("Solo puedes eliminar tus propias publicaciones.");
       return;
@@ -41,30 +77,31 @@ function BlogPage() {
       return;
     }
 
-    const updatedPosts = posts.filter((post) => post.id !== postId);
-    localStorage.setItem("blogPosts", JSON.stringify(updatedPosts));
-    setPosts(updatedPosts);
-    alert("Publicación eliminada correctamente.");
+    try {
+      await eliminarBlog(String(postId));
+      alert("Publicación eliminada correctamente.");
+      loadPosts();
+    } catch (error) {
+      console.error("Error al eliminar:", error);
+      alert("Fallo la eliminación.");
+    }
   };
 
   return (
     <div className="max-w-6xl mx-auto mt-10 p-8">
-      {/* Header del Blog */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold mb-4 text-white">
-          Nuestro Blog
-        </h1>
-        <p className="text-gray-300 text-lg">
+      <header className="mb-10 text-center">
+        <h1 className="text-5xl font-extrabold text-white">Nuestro Blog</h1>
+        <p className="text-xl text-sky-400 mt-2">
           Descubre las últimas novedades y artículos de la comunidad gamer
         </p>
-      </div>
+      </header>
 
-      {/* Botón para crear post (solo usuarios logueados) */}
+      {/* Botón para crear post (solo aparece si estás logueado) */}
       {isAuthenticated && (
         <div className="text-center mb-8">
           <button
             onClick={() => navigate("/create-post")}
-            className="flex items-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-lg mx-auto"
+            className="flex items-center justify-center mx-auto gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-lg"
           >
             <Plus className="w-5 h-5 mr-2" />
             Crear Nuevo Post
@@ -72,28 +109,27 @@ function BlogPage() {
         </div>
       )}
 
-      {/* Lista de Posts en formato de artículo */}
+      {/* Lista de Posts */}
       {posts.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-xl text-gray-400">
+            Aún no hay posts en el blog.{" "}
             {isAuthenticated
-              ? "Aún no hay publicaciones. ¡Sé el primero en crear una!"
-              : "Aún no hay posts en el blog. Inicia sesión para crear el primero."}
+              ? "¡Sé el primero en crear una!"
+              : "Inicia sesión para crear el primero."}
           </p>
         </div>
       ) : (
+        // ... (Muestra de posts)
         <div className="space-y-8">
           {posts.map((post) => (
             <div
               key={post.id}
               className="bg-gray-800 rounded-xl shadow-2xl p-8 border border-gray-700"
             >
-              {/* Título del post */}
               <h2 className="text-3xl font-bold text-white mb-4">
                 {post.title}
               </h2>
-
-              {/* Información del autor y fecha */}
               <div className="flex items-center justify-between text-gray-400 text-sm mb-6">
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-blue-400">
@@ -102,8 +138,6 @@ function BlogPage() {
                 </div>
                 <span className="text-gray-500">{post.date}</span>
               </div>
-
-              {/* Contenido del post */}
               <div className="text-gray-300 leading-relaxed text-lg whitespace-pre-line mb-6">
                 {post.content}
               </div>
@@ -120,13 +154,11 @@ function BlogPage() {
                     <span>Eliminar</span>
                   </button>
                 )}
-                <div className="flex-1"></div>
               </div>
             </div>
           ))}
         </div>
       )}
-
       {/* Mensaje para usuarios no logueados */}
       {!isAuthenticated && posts.length > 0 && (
         <div className="text-center mt-8 p-6 bg-gray-800 rounded-lg border border-gray-700">

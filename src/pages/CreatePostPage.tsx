@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import axios from "axios";
+
+const API_URL = "/api/v1/blog";
 
 function CreatePostPage() {
   const { user, isAuthenticated } = useAuth();
@@ -8,19 +11,17 @@ function CreatePostPage() {
   const [content, setContent] = useState<string>("");
   const navigate = useNavigate();
 
-  // Redirigir si no está autenticado
   React.useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
-  // Si no está autenticado, mostrar nada mientras redirige
   if (!isAuthenticated || !user) {
     return null;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title || !content) {
@@ -28,20 +29,25 @@ function CreatePostPage() {
       return;
     }
 
-    const newPost = {
-      id: Date.now(),
+    const newPostData = {
       title: title,
       content: content,
-      date: new Date().toLocaleDateString("es-CL"),
-      author: user.fullName, // Usar user en lugar de currentUser
+      author: user.nombre,
     };
 
-    const existingPosts = JSON.parse(localStorage.getItem("blogPosts") || "[]");
-    existingPosts.unshift(newPost);
-    localStorage.setItem("blogPosts", JSON.stringify(existingPosts));
+    try {
+      await axios.post(API_URL, newPostData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    alert(`¡Blog creado exitosamente por ${user.fullName}!`);
-    navigate("/blog");
+      alert(`¡Blog creado exitosamente por ${user.nombre}!`);
+      navigate("/blog");
+    } catch (error) {
+      console.error("Error al publicar el post:", error);
+      alert("Fallo la creación del post. Revisa el Backend y la consola.");
+    }
   };
 
   return (
@@ -51,15 +57,16 @@ function CreatePostPage() {
       </h1>
       <p className="text-gray-400 mb-6">
         Publicando por:{" "}
-        <span className="text-sky-400 font-semibold">{user.fullName}</span>
+        <span className="text-sky-400 font-semibold">{user.nombre}</span>
       </p>
+      {/* ... (Tu código de formulario) ... */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div>
           <label
             htmlFor="title"
             className="block text-gray-300 font-semibold mb-2"
           >
-            Título
+            Título{" "}
           </label>
           <input
             type="text"
@@ -78,7 +85,7 @@ function CreatePostPage() {
             htmlFor="content"
             className="block text-gray-300 font-semibold mb-2"
           >
-            Contenido
+            Contenido{" "}
           </label>
           <textarea
             id="content"
@@ -97,14 +104,14 @@ function CreatePostPage() {
             type="submit"
             className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded transition duration-200 flex-1"
           >
-            Publicar Blog
+            Publicar Blog{" "}
           </button>
           <button
             type="button"
             onClick={() => navigate("/blog")}
             className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded transition duration-200"
           >
-            Cancelar
+            Cancelar{" "}
           </button>
         </div>
       </form>
