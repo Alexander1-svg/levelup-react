@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
 interface ProductCardProps {
-  id: string | number;
+  id: number;
   imageUrl: string;
   title: string;
   description: string;
@@ -28,7 +28,7 @@ export function ProductCard({
     e.preventDefault();
 
     addToCart({
-      id: id.toString(),
+      productoId: id,
       title,
       price: price,
       imageUrl,
