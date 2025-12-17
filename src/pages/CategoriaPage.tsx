@@ -56,7 +56,7 @@ export default function CategoriaPage() {
           {productos.map((prod) => (
             <ProductCard
               key={prod.id}
-              id={prod.id.toString()}
+              id={prod.id}
               title={prod.nombre}
               description={prod.descripcion || "Sin descripción disponible"}
               price={prod.precio}
