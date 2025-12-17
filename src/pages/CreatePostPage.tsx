@@ -47,7 +47,10 @@ function CreatePostPage() {
       return;
     }
 
-    console.debug("Token detectado (fuente):", tokenFromContext ? "context" : tokenFromCookie ? "cookie" : "none");
+    console.debug(
+      "Token detectado (fuente):",
+      tokenFromContext ? "context" : tokenFromCookie ? "cookie" : "none"
+    );
 
     const newPostData = {
       titulo: title,
@@ -65,13 +68,20 @@ function CreatePostPage() {
     } catch (error: any) {
       const status = error?.response?.status;
       const serverMsgRaw =
-        error?.response?.data?.message || error?.response?.data || error?.message || error;
+        error?.response?.data?.message ||
+        error?.response?.data ||
+        error?.message ||
+        error;
       const serverMsg =
         typeof serverMsgRaw === "object"
           ? JSON.stringify(serverMsgRaw)
           : String(serverMsgRaw);
 
-      console.error("Error al publicar el post:", { status, serverMsgRaw, error });
+      console.error("Error al publicar el post:", {
+        status,
+        serverMsgRaw,
+        error,
+      });
 
       if (status === 403) {
         alert(
