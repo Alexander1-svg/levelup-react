@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { Producto } from "../types/Producto";
 import { ProductCard } from "../components/ProductCard";
@@ -54,14 +54,15 @@ export default function CategoriaPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {productos.map((prod) => (
-            <ProductCard
-              key={prod.id}
-              id={prod.id}
-              title={prod.nombre}
-              description={prod.descripcion || "Sin descripción disponible"}
-              price={prod.precio}
-              imageUrl={prod.imagenUrl || "https://via.placeholder.com/300"}
-            />
+            <Link key={prod.id} to={`/producto/${prod.id}`}>
+              <ProductCard
+                id={prod.id}
+                title={prod.nombre}
+                description={prod.descripcion || "Sin descripción disponible"}
+                price={prod.precio}
+                imageUrl={prod.imagenUrl || "https://via.placeholder.com/300"}
+              />
+            </Link>
           ))}
         </div>
       )}

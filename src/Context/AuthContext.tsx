@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
-import Cookies from "js-cookie"; // <--- 1. Importamos la librería
+import Cookies from "js-cookie";
 import type { Usuario } from "../types/Usuario";
 
 interface User extends Usuario {
