@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Trash2 } from "lucide-react";
-import { useAuth } from "../Context/AuthContext"; // Usando la ruta de tu contexto
+import { useAuth } from "../Context/AuthContext";
 import { obtenerBlogs, eliminarBlog } from "../api/blogApi";
 import { obtenerUsuarios } from "../api/usuarioApi";
 
-// Normalizamos la forma del post para la UI
 interface BlogPost {
   id: number;
   title: string;
@@ -21,15 +20,12 @@ function BlogPage() {
 
   const loadPosts = useCallback(async () => {
     try {
-      // Obtener blogs del API (puede venir con campos en español o inglés)
       const blogsAny: any[] = await obtenerBlogs();
 
-      // Intentamos obtener lista de usuarios para resolver autor por ID si hace falta
       let users: any[] = [];
       try {
         users = await obtenerUsuarios();
       } catch (e) {
-        // Si la API no permite listar usuarios (ej. solo admin), seguimos sin crash
         users = [];
       }
 
@@ -40,8 +36,6 @@ function BlogPage() {
       });
 
       const normalized: BlogPost[] = blogsAny.map((b: any) => {
-        // posibles campos: titulo/autor/contenido/fechaPublicacion (español)
-        // o title/author/content/date (inglés). También puede venir authorId
         const authorFromString = b.autor ?? b.author;
         const authorId =
           b.autorId ?? b.authorId ?? b.userId ?? b.autor_id ?? b.author_id;
@@ -62,7 +56,7 @@ function BlogPage() {
 
       setPosts(normalized);
     } catch (error) {
-      console.error("🚨 Error al cargar posts:", error);
+      console.error("Error al cargar posts:", error);
       setPosts([]);
     }
   }, []);
@@ -72,7 +66,6 @@ function BlogPage() {
   }, [loadPosts]);
 
   const handleDelete = async (postId: number, postAuthor: string) => {
-    // 🚨 Usamos user.nombre (según tu contexto) para la validación de autoría
     if (!user || user.nombre !== postAuthor) {
       alert("Solo puedes eliminar tus propias publicaciones.");
       return;
@@ -96,7 +89,6 @@ function BlogPage() {
 
   return (
     <div className="max-w-6xl mx-auto mt-10 p-8">
-      {/* Header (Estilo de la imagen de ejemplo) */}
       <header className="mb-10 text-center">
         <h1 className="text-5xl font-extrabold text-white">Nuestro Blog</h1>
         <p className="text-xl text-sky-400 mt-2">
