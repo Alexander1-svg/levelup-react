@@ -33,11 +33,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Guardar en Cookie
     // La sesión dura 7 días
     Cookies.set("currentUser", JSON.stringify(userData), { expires: 7 });
+    localStorage.setItem("token", userData.token);
   };
 
   const logout = () => {
     setUser(null);
     Cookies.remove("currentUser");
+    localStorage.removeItem("token");
   };
 
   const value: AuthContextType = {
