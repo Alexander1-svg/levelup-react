@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import axios from "axios"; // 🚨 ¡Añadir esta importación!
+import axios from "axios";
 
-// 🚨 API_URL RELATIVA: Usará el Proxy de Vite configurado
 const API_URL = "/api/v1/blog";
 
 function CreatePostPage() {
@@ -12,7 +11,6 @@ function CreatePostPage() {
   const [content, setContent] = useState<string>("");
   const navigate = useNavigate();
 
-  // Redirigir si no está autenticado
   React.useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");
@@ -31,17 +29,13 @@ function CreatePostPage() {
       return;
     }
 
-    // Preparamos los datos para enviar al Backend
     const newPostData = {
-      // Spring Boot debe asignar el ID y la fecha
       title: title,
       content: content,
-      // 🚨 CORRECCIÓN: Usamos user.nombre como identificador del autor
       author: user.nombre,
     };
 
     try {
-      // Petición POST a la API
       await axios.post(API_URL, newPostData, {
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +85,7 @@ function CreatePostPage() {
             htmlFor="content"
             className="block text-gray-300 font-semibold mb-2"
           >
-             Contenido   {" "}
+            Contenido{" "}
           </label>
           <textarea
             id="content"

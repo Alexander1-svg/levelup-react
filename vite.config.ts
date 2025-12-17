@@ -20,8 +20,6 @@ export default defineConfig({
     },
   },
 
-  // --- CONFIGURACIÓN DE VITEST ---
-  // Esta sección debería ser aceptada por 'vitest/config'
   test: {
     environment: "jsdom",
     globals: true,
